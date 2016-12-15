@@ -260,8 +260,8 @@ function exportHtml(data, filename) {
 
 function getPhantomjsPath () {
   var phantomPath = process.platform === 'win32' ?
-    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs.exe') :
-    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs');
+    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs.exe') :
+    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
 
   return phantomPath;
 }
