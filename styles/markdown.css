@@ -1,163 +1,639 @@
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
 body {
-	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
-	font-size: 14px;
-	padding-left: 12px;
-	line-height: 22px;
+  margin: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 27px;
+  color: #333;
+  background-color: #fff
 }
 
-img {
-	max-width: 100%;
-	max-height: 100%;
+.previewer h1,
+.previewer h2,
+.previewer h3,
+.previewer h4,
+.previewer h5,
+.previewer h6 {
+  margin: 10px 0;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility
+}
+.previewer h1 small,
+.previewer h2 small,
+.previewer h3 small,
+.previewer h4 small,
+.previewer h5 small,
+.previewer h6 small {
+  font-weight: 400;
+  line-height: 1;
+  color: #999
+}
+.previewer h1,
+.previewer h2,
+.previewer h3 {
+  line-height: 40px
+}
+.previewer h1 {
+  margin: 50px 0 20px;
+  font-size: 30px;
+  color: #0077bb;
+}
+.previewer h2 {
+  margin: 35px 0 20px;
+  font-size: 26px
+}
+.previewer h3 {
+  margin: 20px 0;
+  font-size: 21px
+}
+.previewer h4 {
+  font-size: 18px
+}
+.previewer h5,
+.previewer h6 {
+  font-size: 16px
+}
+
+.previewer h1 small {
+  font-size: 24.5px
+}
+.previewer h2 small {
+  font-size: 17.5px
+}
+.previewer h3 small {
+  font-size: 14px
+}
+.previewer h4 small {
+  font-size: 14px
+}
+
+
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+  display: block
+}
+
+audio,
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1
+}
+
+audio:not([controls]) {
+  display: none
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%
 }
 
 a {
-	color: #4080D0;
-	text-decoration: none;
+  color: #08c;
+  text-decoration: none;
+}
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px
 }
 
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-	outline: 1px solid -webkit-focus-ring-color;
-	outline-offset: -1px;
+a:hover,
+a:active {
+  outline: 0
+}
+
+sub,
+sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline
+}
+
+sup {
+  top: -.5em
+}
+
+sub {
+  bottom: -.25em
+}
+
+img {
+  width: auto\9;
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic
+}
+
+#map_canvas img,
+.google-maps img {
+  max-width: none
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-size: 100%;
+  vertical-align: middle
+}
+
+button,
+input {
+  *overflow: visible;
+  line-height: normal
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}
+
+button,
+html input[type=button],
+input[type=reset],
+input[type=submit] {
+  cursor: pointer;
+  -webkit-appearance: button
+}
+
+label,
+select,
+button,
+input[type=button],
+input[type=reset],
+input[type=submit],
+input[type=radio],
+input[type=checkbox] {
+  cursor: pointer
+}
+
+input[type=search] {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-appearance: textfield
+}
+
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: none
+}
+
+textarea {
+  overflow: auto;
+  vertical-align: top
+}
+
+ul,
+ol {
+  padding: 0;
+  margin: 0 0 10px 25px
+}
+
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+  margin-bottom: 0
+}
+
+li {
+  line-height: 27px
+}
+
+
+dl {
+  margin-bottom: 20px
+}
+
+dt,
+dd {
+  line-height: 20px
+}
+
+dt {
+  font-weight: 700
+}
+
+dd {
+  margin-left: 10px
 }
 
 hr {
-	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
+  border: 0;
+  border-bottom: 1px dashed #cfcfcf;
+  margin: 30px 0;
 }
 
-h1 {
-	padding-bottom: 0.3em;
-	line-height: 1.2;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
+abbr[title],
+abbr[data-original-title] {
+  cursor: help;
+  border-bottom: 1px dotted #999
 }
 
-h1, h2, h3 {
-	font-weight: normal;
-}
-
-a:hover {
-	color: #4080D0;
-	text-decoration: underline;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-table > thead > tr > th {
-	text-align: left;
-	border-bottom: 1px solid;
-}
-
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
-	padding: 5px 10px;
-}
-
-table > tbody > tr + tr > td {
-	border-top: 1px solid;
-}
 
 blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
-	border-left: 5px solid;
+  padding: 10px 15px;
+  margin: 0 0 20px;
+  border-left-style: solid;
+  border-left-width: 10px;
+  border-color: #D6DBDF !important;
+  background: none repeat scroll 0 0 rgba(102,128,153,.05) !important;
+}
+
+blockquote p {
+  margin-bottom: 0;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 25px
+}
+
+blockquote small {
+  display: block;
+  line-height: 20px;
+  color: #999
+}
+
+blockquote small:before {
+  content: '\2014 \00A0'
+}
+
+q:before,
+q:after,
+blockquote:before,
+blockquote:after {
+  content: ""
+}
+
+address {
+  display: block;
+  margin-bottom: 20px;
+  font-style: normal;
+  line-height: 20px
+}
+
+code,
+pre {
+  padding: 0 3px 2px;
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  color: #333;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px
 }
 
 code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-	font-size: 14px;
-	line-height: 19px;
+  border: 0;
+  background-color: #D6DBDF;
+  border-radius: 4px;
+  color: #2C3E50 !important;
+  font-size: 14px;
+  padding: 2px 4px;
+  white-space: nowrap;
 }
 
-.mac code {
-	font-size: 12px;
-	line-height: 18px;
+pre {
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 20px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px
 }
 
-code > div {
-	padding: 16px;
-	border-radius: 3px;
-	overflow: auto;
+
+pre.prettyprint {
+  margin-bottom: 20px
 }
 
-/** Theming */
-
-.vscode-light {
-	color: rgb(30, 30, 30);
+pre code {
+  padding: 0;
+  color: inherit;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: transparent;
+  border: 0
 }
 
-.vscode-dark {
-	color: #DDD;
+form {
+  margin: 0 0 20px
 }
 
-.vscode-high-contrast {
-	color: white;
+fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0
 }
 
-.vscode-light code {
-	color: #A31515;
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 40px;
+  color: #333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5
 }
 
-.vscode-dark code {
-	color: #D7BA7D;
+legend small {
+  font-size: 15px;
+  color: #999
 }
 
-.vscode-light code > div {
-	background-color: rgba(220, 220, 220, 0.4);
+label,
+input,
+button,
+select,
+textarea {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px
 }
 
-.vscode-dark code > div {
-	background-color: rgba(10, 10, 10, 0.4);
+input,
+button,
+select,
+textarea {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
-.vscode-high-contrast code > div {
-	background-color: rgb(0, 0, 0);
+label {
+  /*display: block;*/
+  padding-left: 5px;
+  vertical-align: bottom;
+  margin-bottom: 5px
 }
 
-.vscode-high-contrast h1 {
-	border-color: rgb(0, 0, 0);
+select,
+textarea,
+input[type=text],
+input[type=password],
+input[type=datetime],
+input[type=datetime-local],
+input[type=date],
+input[type=month],
+input[type=time],
+input[type=week],
+input[type=number],
+input[type=email],
+input[type=url],
+input[type=search],
+input[type=tel],
+input[type=color],
+.uneditable-input {
+  display: inline-block;
+  height: 20px;
+  padding: 4px 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #555;
+  vertical-align: middle;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px
 }
 
-.vscode-light table > thead > tr > th {
-	border-color: rgba(0, 0, 0, 0.69);
+input,
+textarea,
+.uneditable-input {
+  width: 206px
 }
 
-.vscode-dark table > thead > tr > th {
-	border-color: rgba(255, 255, 255, 0.69);
+textarea {
+  height: auto
 }
 
-.vscode-light h1,
-.vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
-	border-color: rgba(0, 0, 0, 0.18);
+textarea,
+input[type=text],
+input[type=password],
+input[type=datetime],
+input[type=datetime-local],
+input[type=date],
+input[type=month],
+input[type=time],
+input[type=week],
+input[type=number],
+input[type=email],
+input[type=url],
+input[type=search],
+input[type=tel],
+input[type=color],
+.uneditable-input {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border linear .2s, box-shadow linear .2s;
+  -moz-transition: border linear .2s, box-shadow linear .2s;
+  -o-transition: border linear .2s, box-shadow linear .2s;
+  transition: border linear .2s, box-shadow linear .2s
 }
 
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
-	border-color: rgba(255, 255, 255, 0.18);
+textarea:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=datetime]:focus,
+input[type=datetime-local]:focus,
+input[type=date]:focus,
+input[type=month]:focus,
+input[type=time]:focus,
+input[type=week]:focus,
+input[type=number]:focus,
+input[type=email]:focus,
+input[type=url]:focus,
+input[type=search]:focus,
+input[type=tel]:focus,
+input[type=color]:focus,
+.uneditable-input:focus {
+  border-color: rgba(82, 168, 236, .8);
+  outline: 0;
+  outline: thin dotted \9;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6)
 }
 
-.vscode-light blockquote,
-.vscode-dark blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
+input[type=radio],
+input[type=checkbox] {
+  margin: 4px 0 0;
+  margin-top: 1px \9;
+  *margin-top: 0;
+  line-height: normal
 }
 
-.vscode-high-contrast blockquote {
-	background: transparent;
-	border-color: #fff;
+input[type=file],
+input[type=image],
+input[type=submit],
+input[type=reset],
+input[type=button],
+input[type=radio],
+input[type=checkbox] {
+  width: auto
 }
+
+select,
+input[type=file] {
+  height: 30px;
+  *margin-top: 4px;
+  line-height: 30px
+}
+
+select {
+  width: 220px;
+  background-color: #fff;
+  border: 1px solid #ccc
+}
+
+select[multiple],
+select[size] {
+  height: auto
+}
+
+select:focus,
+input[type=file]:focus,
+input[type=radio]:focus,
+input[type=checkbox]:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px
+}
+
+.uneditable-input,
+.uneditable-textarea {
+  color: #999;
+  cursor: not-allowed;
+  background-color: #fcfcfc;
+  border-color: #ccc;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .025);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .025);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .025)
+}
+
+.uneditable-input {
+  overflow: hidden;
+  white-space: nowrap
+}
+
+.uneditable-textarea {
+  width: auto;
+  height: auto
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #999
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #999
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #999
+}
+
+p {
+  margin: 0 0 10px
+}
+
+small {
+  font-size: 85%
+}
+
+strong {
+  font-weight: 700
+}
+
+em {
+  font-style: italic
+}
+
+cite {
+  font-style: normal
+}
+
+table {
+  max-width: 100%;
+  background: transparent;
+  border-spacing: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  border-left: 0;
+}
+th, td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  /*border-left: 1px solid #ddd;*/
+  /*border-top: 1px;*/
+  border: 1px solid #ddd;
+}
+th {
+  font-weight: 700;
+  vertical-align: bottom;
+}
+
+thead:first-child tr:first-child > th:first-child,
+tbody:first-child tr:first-child > td:first-child {
+  border-top-left-radius: 4px;
+}
+
+thead:first-child tr:first-child > th:last-child,
+tbody:first-child tr:first-child > td:last-child {
+  border-top-right-radius: 4px;
+}
+thead:last-child tr:last-child>th:last-child,
+tbody:last-child tr:last-child>td:last-child,
+tfoot:last-child tr:last-child>td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+thead:last-child tr:last-child>th:first-child,
+tbody:last-child tr:last-child>td:first-child,
+tfoot:last-child tr:last-child>td:first-child {
+  border-bottom-left-radius: 4px;
+}
+tbody > tr:nth-child(2n+1)>td,
+tbody > tr:nth-child(2n+1)>th {
+  background-color: rgba(102,128,153,.05);
+}
+

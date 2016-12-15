@@ -1,42 +1,46 @@
 'use strict';
-var vscode = require('vscode');
-var path = require('path');
-var fs = require('fs');
-var url = require('url');
+const vscode = require('vscode');
+const path = require('path');
+const fs = require('fs');
+const url = require('url');
+
+const makeHtml = require('./src/makeHtml.js').makeHtml
 
 function activate(context) {
-  init();
-  var disposable_command = vscode.commands.registerCommand('extension.markdown-pdf', function () { MarkdownPdf(); });
-  context.subscriptions.push(disposable_command);
 
-  var isConvertOnSave = vscode.workspace.getConfiguration('markdown-pdf')['convertOnSave'];
-  if (isConvertOnSave) {
-    var disposable_onsave = vscode.workspace.onDidSaveTextDocument(function () { MarkdownPdfOnSave(); });
-    context.subscriptions.push(disposable_onsave);
-  }
+  init();
+  let disposable_command = vscode.commands.registerCommand('extension.markdown-html', () => MarkdownHTML())
+  context.subscriptions.push(disposable_command)
+  let disposable_commandPDF = vscode.commands.registerCommand('extension.markdown-pdf', () => MarkdownPdf())
+  context.subscriptions.push(disposable_commandPDF)
+
+  // let isConvertOnSave = vscode.workspace.getConfiguration('markdown-pdf')['convertOnSave']
+  // if (isConvertOnSave) {
+  //   let disposable_onsave = vscode.workspace.onDidSaveTextDocument(() => MarkdownPdfOnSave())
+  //   context.subscriptions.push(disposable_onsave)
+  // }
 }
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
-function deactivate() {
-}
+function deactivate() {}
 exports.deactivate = deactivate;
 
-function MarkdownPdf() {
+
+function MarkdownHTML() {
   // check active window
-  var editor = vscode.window.activeTextEditor;
+  const editor = vscode.window.activeTextEditor
   if (!editor) {
     vscode.window.showWarningMessage('No active Editor!');
     return;
   }
-
   // check markdown mode
-  var mode = editor.document.languageId;
+  const mode = editor.document.languageId
   if (mode != 'markdown') {
     vscode.window.showWarningMessage('It is not a markdown mode!');
     return;
   }
-
+  // get current file name
   var mdfilename = editor.document.fileName;
   var ext = path.extname(mdfilename);
   if (!isExistsFile(mdfilename)) {
@@ -48,8 +52,48 @@ function MarkdownPdf() {
     return;
   }
 
+  // start convert
   vscode.window.setStatusBarMessage('$(markdown) Converting...');
+  // convert markdown to html
+  var content = convertMarkdownToHtml(mdfilename);
 
+  // make html
+  var html = makeHtml(content);
+
+  // var type = vscode.workspace.getConfiguration('markdown-pdf')['type'] || 'pdf';
+  // var types = ['html', 'pdf', 'png', 'jpeg'];
+  var filename = '';
+  // export html
+  filename = mdfilename.replace(ext, '.html');
+  exportHtml(html, filename);
+}
+function MarkdownPdf() {
+  // check active window
+  const editor = vscode.window.activeTextEditor
+  if (!editor) {
+    vscode.window.showWarningMessage('No active Editor!');
+    return;
+  }
+  // check markdown mode
+  const mode = editor.document.languageId
+  if (mode != 'markdown') {
+    vscode.window.showWarningMessage('It is not a markdown mode!');
+    return;
+  }
+  // get current file name
+  var mdfilename = editor.document.fileName;
+  var ext = path.extname(mdfilename);
+  if (!isExistsFile(mdfilename)) {
+    if (editor.document.isUntitled) {
+      vscode.window.showWarningMessage('Please save the file!');
+      return;
+    }
+    vscode.window.showWarningMessage('File name does not get!');
+    return;
+  }
+
+  // start convert
+  vscode.window.setStatusBarMessage('$(markdown) Converting...');
   // convert markdown to html
   var content = convertMarkdownToHtml(mdfilename);
 
@@ -68,27 +112,26 @@ function MarkdownPdf() {
     filename = mdfilename.replace(ext, '.' + type);
     exportPdf(html, filename);
 
-    var debug = vscode.workspace.getConfiguration('markdown-pdf')['debug'] || false;
-    if (debug) {
-      var f = path.parse(mdfilename);
-      filename = path.join(f.dir, f.name + '_debug.html');
-      exportHtml(html, filename);
-    }
+    // var debug = vscode.workspace.getConfiguration('markdown-pdf')['debug'] || false;
+    // if (debug) {
+    //   var f = path.parse(mdfilename);
+    //   filename = path.join(f.dir, f.name + '_debug.html');
+    //   exportHtml(html, filename);
+    // }
   } else {
     vscode.window.showErrorMessage('ERROR: Supported formats: html, pdf, png, jpeg.');
     return;
   }
 }
 
-function MarkdownPdfOnSave () {
-  var editor = vscode.window.activeTextEditor;
-  var mode = editor.document.languageId;
-  if (mode != 'markdown') {
-    return;
-  }
-  MarkdownPdf();
-}
-
+// function MarkdownPdfOnSave () {
+//   var editor = vscode.window.activeTextEditor;
+//   var mode = editor.document.languageId;
+//   if (mode != 'markdown') {
+//     return;
+//   }
+//   MarkdownPdf();
+// }
 /*
  * convert markdown to html (markdown-it)
  */
@@ -154,60 +197,51 @@ function convertMarkdownToHtml(filename) {
   md.use(require('markdown-it-checkbox'));
 
   // emoji
-  var f = vscode.workspace.getConfiguration('markdown-pdf')['emoji'];
-  if (f) {
-    var emojies_defs = require(path.join(__dirname, 'data', 'emoji.json'));
-    try {
-      var options = {
-        defs: emojies_defs
-      };
-    } catch (e) {
-      vscode.window.showErrorMessage('ERROR: markdown-it-emoji:options');
-      vscode.window.showErrorMessage(e.message);
-    }
-    md.use(require('markdown-it-emoji'), options);
-    md.renderer.rules.emoji = function(token, idx) {
-      var emoji = token[idx].markup;
-      var emojipath = path.join(__dirname, 'node_modules', 'emoji-images', 'pngs', emoji + '.png');
-      var emojidata = readFile(emojipath, null).toString('base64');
-      if (emojidata) {
-        return '<img class="emoji" alt="' + emoji + '" src="data:image/png;base64,' + emojidata + '" />';
-      } else {
-        return ':' + emoji + ':';
-      }
-    };
-  }
+  // var f = vscode.workspace.getConfiguration('markdown-pdf')['emoji'];
+  // if (f) {
+  //   var emojies_defs = require(path.join(__dirname, 'data', 'emoji.json'));
+  //   try {
+  //     var options = {
+  //       defs: emojies_defs
+  //     };
+  //   } catch (e) {
+  //     vscode.window.showErrorMessage('ERROR: markdown-it-emoji:options');
+  //     vscode.window.showErrorMessage(e.message);
+  //   }
+  //   md.use(require('markdown-it-emoji'), options);
+  //   md.renderer.rules.emoji = function(token, idx) {
+  //     var emoji = token[idx].markup;
+  //     var emojipath = path.join(__dirname, 'node_modules', 'emoji-images', 'pngs', emoji + '.png');
+  //     var emojidata = readFile(emojipath, null).toString('base64');
+  //     if (emojidata) {
+  //       return '<img class="emoji" alt="' + emoji + '" src="data:image/png;base64,' + emojidata + '" />';
+  //     } else {
+  //       return ':' + emoji + ':';
+  //     }
+  //   };
+  // }
 
   return md.render(fs.readFileSync(filename, 'utf-8'));
 }
-
 /*
  * make html
  */
-function makeHtml(data) {
-  // read styles
-  var style = '';
-  style += readStyles();
+// function makeHtml(content) {
+//   // read styles
+//   const style = readStyles()
 
-  // read template
-  var filename = path.join(__dirname, 'template', 'template.html');
-  var template = readFile(filename);
+//   // read template
+//   var filename = path.join(__dirname, 'template', 'template.html');
+//   var template = readFile(filename);
 
-  // compile template
-  var mustache = require('mustache');
+//   // compile template
+//   var mustache = require('mustache');
 
-  try {
-    var view = {
-      style: style,
-      content: data
-    };
-  } catch (e) {
-    vscode.window.showErrorMessage('ERROR: mustache:view');
-    vscode.window.showErrorMessage(e.message);
-  }
-
-  return mustache.render(template, view);
-}
+//   return mustache.render(template, {
+//     style,
+//     content,
+//   });
+// }
 
 /*
  * export a html to a html file
@@ -224,16 +258,21 @@ function exportHtml(data, filename) {
   });
 }
 
+function getPhantomjsPath () {
+  var phantomPath = process.platform === 'win32' ?
+    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs.exe') :
+    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs');
+
+  return phantomPath;
+}
 /*
  * export a html to a pdf file (html-pdf)
  */
 function exportPdf(data, filename) {
 
-  var phantomPath = getPhantomjsPath();
-  if (!checkPhantomjs()) {
-    getPhantomjsBinary();
-  }
-  if (!checkPhantomjs()) {
+  const phantomPath = getPhantomjsPath();
+
+  if (!isExistsFile(phantomPath)) { // lose phantomJs
     vscode.window.showErrorMessage('ERROR: phantomjs binary does not exist: ' + phantomPath);
     return;
   }
@@ -244,7 +283,7 @@ function exportPdf(data, filename) {
       "format": vscode.workspace.getConfiguration('markdown-pdf')['format'] || 'A4',
       "orientation": vscode.workspace.getConfiguration('markdown-pdf')['orientation'] || 'portrait',
       "border": {
-        "top":  vscode.workspace.getConfiguration('markdown-pdf')['border']['top'] || '', 
+        "top":  vscode.workspace.getConfiguration('markdown-pdf')['border']['top'] || '',
         "right": vscode.workspace.getConfiguration('markdown-pdf')['border']['right'] || '',
         "bottom": vscode.workspace.getConfiguration('markdown-pdf')['border']['bottom'] || '',
         "left": vscode.workspace.getConfiguration('markdown-pdf')['border']['left'] || ''
@@ -275,7 +314,7 @@ function exportPdf(data, filename) {
       }
       vscode.window.showInformationMessage('OUTPUT: ' + filename);
       vscode.window.setStatusBarMessage('');
-    });    
+    });
   } catch (e) {
     vscode.window.showErrorMessage('ERROR: htmlpdf.create()');
     vscode.window.showErrorMessage(e.message);
@@ -296,27 +335,7 @@ function isExistsFile(filename) {
   }
 }
 
-function readFile(filename, encode) {
-  if (filename.length === 0) {
-    return '';
-  }
-  if (!encode && encode !== null) {
-    encode = 'utf-8';
-  }
-  if (filename.indexOf('file://') === 0) {
-    if (process.platform === 'win32') {
-      filename = filename.replace(/^file:\/\/\//, '')
-                 .replace(/^file:\/\//, '');
-    } else {
-      filename = filename.replace(/^file:\/\//, '');
-    }
-  }
-  if (isExistsFile(filename)) {
-    return fs.readFileSync(filename, encode);
-  } else {
-    return '';
-  }
-}
+
 
 function convertImgPath(src, filename) {
   var href = decodeURIComponent(src);
@@ -341,135 +360,12 @@ function convertImgPath(src, filename) {
   }
 }
 
-function makeCss(filename) {
-  var css = readFile(filename);
-  if (css) {
-    return '\n<style>\n' + css + '\n</style>\n';
-  } else {
-    return '';
-  }
-}
 
-function readStyles() {
-  var style = '';
-  var styles = '';
-  var filename = '';
-  var i;
 
-  // 1. read the style of the vscode.
-  filename = path.join(__dirname, 'styles', 'markdown.css');
-  style += makeCss(filename);
 
-  // 2. read the style of the markdown.styles setting.
-  styles = vscode.workspace.getConfiguration('markdown')['styles'];
-  if (styles && Array.isArray(styles) && styles.length > 0) {
-    for (i = 0; i < styles.length; i++) {
-      var href = filename = styles[i];
-      var protocol = url.parse(href).protocol;
-      if (protocol === 'http:' || protocol === 'https:') {
-        style += '<link rel=\"stylesheet\" href=\"" + href + "\" type=\"text/css\">';
-      } else if (protocol === 'file:') {
-        style += makeCss(filename);
-      }
-    }
-  }
-
-  // 3. read the style of the highlight.js.
-  var highlightStyle = vscode.workspace.getConfiguration('markdown-pdf')['highlightStyle'] || '';
-  var ishighlight = vscode.workspace.getConfiguration('markdown-pdf')['highlight'];
-  if (ishighlight) {
-    if (highlightStyle) {
-      var css = vscode.workspace.getConfiguration('markdown-pdf')['highlightStyle'] || 'github.css';
-      filename = path.join(__dirname, 'node_modules', 'highlight.js', 'styles', css);
-      style += makeCss(filename);
-    } else {
-      filename = path.join(__dirname, 'styles', 'tomorrow.css');
-      style += makeCss(filename);
-    }
-  }
-
-  // 4. read the style of the markdown-pdf.
-  filename = path.join(__dirname, 'styles', 'markdown-pdf.css');
-  style += makeCss(filename);
-
-  // 5. read the style of the markdown-pdf.styles settings.
-  styles = vscode.workspace.getConfiguration('markdown-pdf')['styles'] || '';
-  if (styles && Array.isArray(styles) && styles.length > 0) {
-    for (i = 0; i < styles.length; i++) {
-      filename = styles[i];
-      style += makeCss(filename);
-    }
-  }
-
-  return style;
-}
-
-function getPhantomjsPath () {
-  var phantomPath = process.platform === 'win32' ?
-    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs.exe') :
-    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs');
-  return phantomPath;
-}
-
-function checkPhantomjs () {
-  var phantomPath = getPhantomjsPath();
-  if (isExistsFile(phantomPath)) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function getPhantomjsBinary() {
-  // which npm
-  var which = require('which');
-  var npm = '';
-  try {
-    npm = which.sync('npm');
-  } catch (e) {
-    console.warn(e.message);
-  }
-
-  // which node
-  var node = '';
-  try {
-    node = which.sync('node');
-  } catch (e) {
-    console.warn(e.message);
-  }
-
-  // npm rebuild phantomjs-prebuilt
-  var execSync = require('child_process').execSync;
-  if (isExistsFile(npm) && isExistsFile(node)) {
-    try {
-      var std = execSync('npm rebuild phantomjs-prebuilt', {cwd: __dirname});
-      console.log(std.toString());
-    } catch (e) {
-      vscode.window.showErrorMessage('ERROR: "npm rebuild phantomjs-prebuilt"');
-      vscode.window.showErrorMessage(e.message);
-    }
-  } else {
-  // node_modules/phantomjs-prebuilt/install.js
-    var install = path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'install.js').replace(/\\/g, '/');
-    try {
-      if (isExistsFile(install)) {
-        require(install);
-      }
-    } catch (e) {
-      console.error(e.message);
-    }
-  }
-
-  if (checkPhantomjs()) {
-    return;
-  }
-}
 
 function init () {
-  // var phantomPath = getPhantomjsPath();
-  if (!checkPhantomjs()) {
-    getPhantomjsBinary();
-  }
+
 }
 
 // for './node_modules/phantomjs-prebuilt/install.js'

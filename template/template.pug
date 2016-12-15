@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title= title
+    meta(name='description', content= title)
+    meta(name='viewport' content='width=device-width, user-scalable=no')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='format-detection', content='telephone=no, email=no')
+    meta(http-equiv='cleartype' content='on')
+    //- 可以让360等部分国产双核(ie／webkit)浏览器默认采用高速模式渲染页面
+    meta(name='renderer' content='webkit')
+
+    meta(name="msapplication-TileColor" content="#da532c")
+    meta(name="theme-color" content="#ffffff")
+    //- Include css
+    //- link(rel='stylesheet' href='index.css')
+    style!= style
+
+  body.theme-white
+    .previewer!= content
+    //- .modal
+
+    //- Include js
+    //- script(src='index.js')
