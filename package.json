@@ -2,7 +2,7 @@
   "name": "typer",
   "displayName": "Typer",
   "description": "Markdown tool",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "yuchuanxi",
   "icon": "images/icon.png",
   "engines": {
