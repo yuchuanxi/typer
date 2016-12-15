@@ -487,10 +487,6 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-emoji-images@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/emoji-images/-/emoji-images-0.1.1.tgz#f992dc72092c03fbe092827631987eb3b1319b67"
-
 end-of-stream@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.0.0.tgz#d4596e702734a93e40e9af864319eabd99ff2f0e"
