@@ -260,10 +260,18 @@ function exportHtml(data, filename) {
 
 function getPhantomjsPath () {
   var phantomPath = process.platform === 'win32' ?
-    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs.exe') :
-    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'bin', 'phantomjs');
+    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs.exe') :
+    path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'lib', 'phantom', 'bin', 'phantomjs');
 
   return phantomPath;
+}
+function checkPhantomjs () {
+  var phantomPath = getPhantomjsPath();
+  if (isExistsFile(phantomPath)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 /*
  * export a html to a pdf file (html-pdf)
@@ -364,8 +372,55 @@ function convertImgPath(src, filename) {
 
 
 
-function init () {
+function getPhantomjsBinary() {
+  // which npm
+  var which = require('which');
+  var npm = '';
+  try {
+    npm = which.sync('npm');
+  } catch (e) {
+    console.warn(e.message);
+  }
 
+  // which node
+  var node = '';
+  try {
+    node = which.sync('node');
+  } catch (e) {
+    console.warn(e.message);
+  }
+
+  // npm rebuild phantomjs-prebuilt
+  var execSync = require('child_process').execSync;
+  if (isExistsFile(npm) && isExistsFile(node)) {
+    try {
+      var std = execSync('npm rebuild phantomjs-prebuilt', {cwd: __dirname});
+      console.log(std.toString());
+    } catch (e) {
+      vscode.window.showErrorMessage('ERROR: "npm rebuild phantomjs-prebuilt"');
+      vscode.window.showErrorMessage(e.message);
+    }
+  } else {
+  // node_modules/phantomjs-prebuilt/install.js
+    var install = path.join(__dirname, 'node_modules', 'phantomjs-prebuilt', 'install.js').replace(/\\/g, '/');
+    try {
+      if (isExistsFile(install)) {
+        require(install);
+      }
+    } catch (e) {
+      console.error(e.message);
+    }
+  }
+
+  if (checkPhantomjs()) {
+    return;
+  }
+}
+
+function init () {
+  if (!checkPhantomjs()) {
+    getPhantomjsBinary();
+  }
 }
 
 // for './node_modules/phantomjs-prebuilt/install.js'
