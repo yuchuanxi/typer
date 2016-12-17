@@ -3,3 +3,4 @@ work/**
 *.vsix
 *.bat
 .eslintrc.json
+yarn-error.log

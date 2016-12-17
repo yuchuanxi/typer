@@ -192,5 +192,8 @@
     "pug": "^2.0.0-beta6",
     "vscode": "^1.0.3",
     "which": "^1.2.12"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^13.0.0"
   }
 }
