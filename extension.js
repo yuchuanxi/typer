@@ -7,21 +7,18 @@ const isExistsFile = require('./src/isExistsFile.js')
 const convertMdToHtml = require('./src/convertMdToHtml.js')
 const convertMdToPdf = require('./src/convertMdToPdf.js')
 
-const registerCommand = vscode.commands.registerCommand
 const register = (name, fn) => {
-  return vscode.commands.registerCommand(`extension.${name}`, () => fn())
+  context.subscriptions.push(vscode.commands.registerCommand(`extension.${name}`, () => fn()))
 }
 
 exports.activate = (context) => {
-console.log(1111)
+  console.log('typer activated!!!')
   if (!checkPhantomjs()) {
     getPhantomjsBinary()
   }
 
-  let disposable_command = registerCommand('extension.markdown-html', () => convertMdToHtml())
-  let disposable_commandPDF = registerCommand('extension.markdown-pdf', () => convertMdToPdf())
-  context.subscriptions.push(disposable_command)
-  context.subscriptions.push(disposable_commandPDF)
+  register('markdown-html', convertMdToHtml)
+  register('markdown-pdf', convertMdToPdf)
 }
 
 // this method is called when your extension is deactivated
