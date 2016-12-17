@@ -1,8 +1,8 @@
 {
   "name": "typer",
   "displayName": "Typer",
-  "description": "Markdown tool",
-  "version": "0.1.1",
+  "description": "Markdown Partner",
+  "version": "0.1.2",
   "publisher": "yuchuanxi",
   "icon": "images/icon.png",
   "engines": {
@@ -58,13 +58,6 @@
       "type": "object",
       "title": "typer configuration",
       "properties": {
-        "markdown-pdf.convertOnSave": {
-          "type": [
-            "boolean"
-          ],
-          "default": false,
-          "description": "Enable Auto convert on save"
-        },
         "markdown-pdf.styles": {
           "type": [
             "array"
@@ -96,14 +89,6 @@
           "type": "boolean",
           "default": true,
           "description": "Enable emoji. http://www.webpagefx.com/tools/emoji-cheat-sheet/"
-        },
-        "markdown-pdf.type": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": "pdf",
-          "description": "Output format: pdf, html, png, jpeg"
         },
         "markdown-pdf.quality": {
           "type": "number",

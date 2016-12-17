@@ -2,9 +2,9 @@ const vscode = require('vscode')
 const path = require('path')
 const pug = require('pug')
 
-const readStyles = require('./readStyles.js').readStyles
+const readStyles = require('./readStyles.js')
 
-exports.makeHtml = (content) => {
+module.exports = (content) => {
   const style = readStyles()
   const filePath = path.join(__dirname, '../template', 'template.pug')
   // get file name

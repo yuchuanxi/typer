@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const url = require('url')
 
-exports.readStyles = () => {
+module.exports = () => {
   var style = '';
   var styles = '';
   var filename = '';
