@@ -3,17 +3,19 @@
  */
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
 
 const vscode = require('vscode')
 const hljs = require('highlight.js')
-const markdownIt = require('markdown-it')
 const cheerio = require('cheerio')
+const markdownIt = require('markdown-it')
+const markdownItCheckbox = require('markdown-it-checkbox')
 
 const showErrorMessage = vscode.window.showErrorMessage
 const vscodeConfigurations = vscode.workspace.getConfiguration('markdown-pdf')
 
 module.exports = (mdName) => {
-  const breaks = vscodeConfigurations['breaks'];
+  const breaks = vscodeConfigurations.breaks
   const md = markdownIt({
     html: true,
     breaks,
@@ -21,9 +23,9 @@ module.exports = (mdName) => {
   })
 
   // convert the img src of the markdown
-  var type = vscodeConfigurations['type'] || 'pdf';
+  const type = vscodeConfigurations.type || 'pdf'
 
-  var defaultRender = md.renderer.rules.image;
+  const defaultRender = md.renderer.rules.image
   md.renderer.rules.image = (tokens, idx, options, env, self) => {
     const token = tokens[idx]
     let href = token.attrs[token.attrIndex('src')][1]
@@ -39,31 +41,31 @@ module.exports = (mdName) => {
 
   if (type !== 'html') {
     // convert the img src of the html
-    md.renderer.rules.html_block = function (tokens, idx) {
-      var html = tokens[idx].content;
-      var $ = cheerio.load(html);
-      $('img').each(function () {
-        var src = $(this).attr('src');
-        var href = convertImgPath(src, mdName);
-        $(this).attr('src', href);
-      });
-      return $.html();
-    };
+    md.renderer.rules.html_block = (tokens, idx) => {
+      const html = tokens[idx].content
+      const $ = cheerio.load(html)
+      $('img').each(() => {
+        const src = $(this).attr('src')
+        const href = convertImgPath(src, mdName)
+        $(this).attr('src', href)
+      })
+      return $.html()
+    }
   }
 
   // checkbox
-  md.use(require('markdown-it-checkbox'))
+  md.use(markdownItCheckbox)
 
   return md.render(fs.readFileSync(mdName, 'utf-8'))
 }
 
-function highlight (str, lang) {
+function highlight(str, lang) {
   if (lang && hljs.getLanguage(lang)) {
     try {
       return `<pre class="hljs"><code>${hljs.highlight(lang, str, true).value}</code></pre>`
     } catch (e) {
-      showErrorMessage('ERROR: markdown-it:highlight');
-      showErrorMessage(e.message);
+      showErrorMessage('ERROR: markdown-it:highlight')
+      showErrorMessage(e.message)
     }
   }
 
@@ -71,24 +73,22 @@ function highlight (str, lang) {
 }
 
 function convertImgPath(src, filename) {
-  var href = decodeURIComponent(src);
+  let href = decodeURIComponent(src)
   href = href.replace(/("|')/g, '')
-         .replace(/\\/g, '/');
-  var protocol = url.parse(href).protocol;
-  if (protocol === 'file:' && href.indexOf('file:///') !==0) {
-    return href.replace(/^file:\/\//, 'file:///');
+         .replace(/\\/g, '/')
+  const protocol = url.parse(href).protocol
+  if (protocol === 'file:' && href.indexOf('file:///') !== 0) {
+    return href.replace(/^file:\/\//, 'file:///')
   } else if (protocol === 'file:') {
-    return href;
+    return href
   } else if (!protocol || path.isAbsolute(href)) {
-    href = path.resolve(path.dirname(filename), href).replace(/\\/g, '/');
+    href = path.resolve(path.dirname(filename), href).replace(/\\/g, '/')
     if (href.indexOf('//') === 0) {
-      return 'file:' + href;
+      return `file:${href}`
     } else if (href.indexOf('/') === 0) {
-      return 'file://' + href;
-    } else {
-      return 'file:///' + href;
+      return `file://${href}`
     }
-  } else {
-    return src;
+    return `file:///${href}`
   }
+  return src
 }

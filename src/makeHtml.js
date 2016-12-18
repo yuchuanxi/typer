@@ -1,5 +1,6 @@
-const vscode = require('vscode')
 const path = require('path')
+
+const vscode = require('vscode')
 const pug = require('pug')
 
 const readStyles = require('./readStyles.js')

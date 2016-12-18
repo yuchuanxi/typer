@@ -8,3 +8,11 @@
 extends: "airbnb-base" # 扩展
 env:
   commonjs: true
+rules:
+  semi:
+    - 2
+    - 'never'
+  no-use-before-define:
+    - 0
+  no-console:
+    - 0
