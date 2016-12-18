@@ -5,6 +5,6 @@
 # YAML javascript 语法： http://nodeca.github.io/js-yaml/
 # https://github.com/airbnb/javascript
 
-extends: "airbnb" # 扩展
+extends: "airbnb-base" # 扩展
 env:
   commonjs: true
