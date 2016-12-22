@@ -19,7 +19,18 @@ module.exports = (mdName) => {
   const md = markdownIt({
     html: true,
     breaks,
-    highlight,
+    highlight: (str, lang) => {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return `<pre class="hljs"><code>${hljs.highlight(lang, str, true).value}</code></pre>`
+        } catch (e) {
+          showErrorMessage('ERROR: markdown-it:highlight')
+          showErrorMessage(e.message)
+        }
+      }
+
+      return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
+    },
   })
 
   // convert the img src of the markdown
@@ -57,19 +68,6 @@ module.exports = (mdName) => {
   md.use(markdownItCheckbox)
 
   return md.render(fs.readFileSync(mdName, 'utf-8'))
-}
-
-function highlight(str, lang) {
-  if (lang && hljs.getLanguage(lang)) {
-    try {
-      return `<pre class="hljs"><code>${hljs.highlight(lang, str, true).value}</code></pre>`
-    } catch (e) {
-      showErrorMessage('ERROR: markdown-it:highlight')
-      showErrorMessage(e.message)
-    }
-  }
-
-  return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
 }
 
 function convertImgPath(src, filename) {
