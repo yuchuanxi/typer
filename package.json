@@ -32,6 +32,10 @@
   "contributes": {
     "commands": [
       {
+        "command": "extension.markdown-preview",
+        "title": "Preview Markdown on Right"
+      },
+      {
         "command": "extension.markdown-html",
         "title": "Convert Markdown to HTML"
       },
@@ -42,6 +46,11 @@
     ],
     "menus": {
       "editor/context": [
+        {
+          "command": "extension.markdown-preview",
+          "title": "Preview Markdown on Right",
+          "group": "typer"
+        },
         {
           "when": "resourceLangId == markdown",
           "command": "extension.markdown-html",
