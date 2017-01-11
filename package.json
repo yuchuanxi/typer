@@ -193,6 +193,7 @@
   },
   "dependencies": {
     "cheerio": "^0.22.0",
+    "debug": "^2.6.0",
     "highlight.js": "^9.9.0",
     "html-pdf": "^2.0.1",
     "markdown-it": "^8.2.2",
