@@ -25,12 +25,14 @@ exports.activate = (context) => {
     if (e.document === vscode.window.activeTextEditor.document) {
       provider.update(previewUri)
     }
+    console.log('workspace.onDidChangeTextDocument')
   })
   // An event which fires when the selection in an editor has changed.
   vscode.window.onDidChangeTextEditorSelection((e) => {
     if (e.textEditor === vscode.window.activeTextEditor) {
       provider.update(previewUri)
     }
+    console.log('window.onDidChangeTextEditorSelection')
   })
 
   // Export html/pdf
