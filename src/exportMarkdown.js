@@ -58,10 +58,6 @@ const exportCallback = (file) => {
 
 module.exports = (type) => {
   return () => {
-    if (phantomJsDisabled) {
-      showErrorMessage(`ERROR: phantomjs binary does not exist: ${phantomPath}`)
-      return false
-    }
     if (!checkEditorAvailable(true)) {
       return false
     }
@@ -79,6 +75,10 @@ module.exports = (type) => {
       fs.writeFile(fileName, html, 'utf-8', exportCallback(fileName))
     // export pdf
     } else if (type === 'pdf') {
+      if (phantomJsDisabled) {
+        showErrorMessage(`ERROR: phantomjs binary does not exist: ${phantomPath}`)
+        return false
+      }
       const fileName = mdFileName.replace(mdFileExtName, '.pdf')
       htmlpdf.create(html, options).toFile(fileName, exportCallback(fileName))
     }
