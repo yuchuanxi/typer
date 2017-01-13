@@ -20,7 +20,7 @@ let phantomJsDisabled = false
 if (!isExistsFile(phantomPath)) { // lose phantomJs
   phantomJsDisabled = true
 }
-const vscodeConfigurations = vscode.workspace.getConfiguration('markdown-pdf')
+const vscodeConfigurations = vscode.workspace.getConfiguration('typer')
 const options = {
   format: vscodeConfigurations.format || 'A4',
   orientation: vscodeConfigurations.orientation || 'portrait',

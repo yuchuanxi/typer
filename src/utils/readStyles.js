@@ -31,11 +31,11 @@ module.exports = () => {
   }
 
   // 3. read the style of the highlight.js.
-  const highlightStyle = vscode.workspace.getConfiguration('markdown-pdf').highlightStyle || ''
-  const ishighlight = vscode.workspace.getConfiguration('markdown-pdf').highlight
+  const highlightStyle = vscode.workspace.getConfiguration('typer').highlightStyle || ''
+  const ishighlight = vscode.workspace.getConfiguration('typer').highlight
   if (ishighlight) {
     if (highlightStyle) {
-      const css = vscode.workspace.getConfiguration('markdown-pdf').highlightStyle || 'github.css'
+      const css = vscode.workspace.getConfiguration('typer').highlightStyle || 'github.css'
       filename = path.join(__dirname, 'node_modules', 'highlight.js', 'styles', css)
       style += readCss(filename)
     } else {
@@ -49,7 +49,7 @@ module.exports = () => {
   style += readCss(filename)
 
   // 5. read the style of the markdown-pdf.styles settings.
-  styles = vscode.workspace.getConfiguration('markdown-pdf').styles || ''
+  styles = vscode.workspace.getConfiguration('typer').styles || ''
   if (Array.isArray(styles) && styles.length > 0) {
     for (i = 0; i < styles.length; i++) {
       filename = styles[i]
