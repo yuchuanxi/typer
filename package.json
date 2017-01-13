@@ -2,7 +2,7 @@
   "name": "typer",
   "displayName": "Typer",
   "description": "Markdown Partner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "yuchuanxi",
   "icon": "images/icon.png",
   "engines": {
@@ -68,44 +68,19 @@
       "type": "object",
       "title": "typer configuration",
       "properties": {
-        "markdown-pdf.styles": {
+        "typer.styles": {
           "type": [
             "array"
           ],
           "default": [],
-          "description": "A list of local paths to the stylesheets to use from the markdown-pdf. All '\\' need to be written as '\\\\'."
+          "description": "A list of local paths to the stylesheets to use from the typer. All '\\' need to be written as '\\\\'."
         },
-        "markdown-pdf.highlightStyle": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": "",
-          "description": "Set the style file name. for example: github.css, monokai.css ... https://github.com/isagalaev/highlight.js/tree/master/src/styles"
-        },
-        "markdown-pdf.highlight": {
-          "type": [
-            "boolean"
-          ],
-          "default": true,
-          "description": "Enable Syntax highlighting"
-        },
-        "markdown-pdf.breaks": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable line breaks"
-        },
-        "markdown-pdf.emoji": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable emoji. http://www.webpagefx.com/tools/emoji-cheat-sheet/"
-        },
-        "markdown-pdf.quality": {
+        "typer.quality": {
           "type": "number",
           "default": 90,
           "description": "Only used for types png & jpeg"
         },
-        "markdown-pdf.format": {
+        "typer.format": {
           "type": [
             "string",
             "null"
@@ -113,7 +88,7 @@
           "default": "A4",
           "description": "Page Option. Page size: A3, A4, A5, Legal, Letter, Tabloid"
         },
-        "markdown-pdf.orientation": {
+        "typer.orientation": {
           "type": [
             "string",
             "null"
@@ -121,7 +96,7 @@
           "default": "portrait",
           "description": "Page Option. portrait or landscape"
         },
-        "markdown-pdf.border.top": {
+        "typer.border.top": {
           "type": [
             "string",
             "null"
@@ -129,7 +104,7 @@
           "default": "1.5cm",
           "description": "Page Option. Border Top. units: mm, cm, in, px"
         },
-        "markdown-pdf.border.bottom": {
+        "typer.border.bottom": {
           "type": [
             "string",
             "null"
@@ -137,7 +112,7 @@
           "default": "1cm",
           "description": "Page Option. Border bottom. units: mm, cm, in, px"
         },
-        "markdown-pdf.border.right": {
+        "typer.border.right": {
           "type": [
             "string",
             "null"
@@ -145,7 +120,7 @@
           "default": "1cm",
           "description": "Page Option. Border right. units: mm, cm, in, px"
         },
-        "markdown-pdf.border.left": {
+        "typer.border.left": {
           "type": [
             "string",
             "null"
@@ -153,7 +128,7 @@
           "default": "1cm",
           "description": "Page Option. Border left. units: mm, cm, in, px"
         },
-        "markdown-pdf.header.contents": {
+        "typer.header.contents": {
           "type": [
             "string",
             "null"
@@ -161,7 +136,7 @@
           "default": "",
           "description": "Header contents"
         },
-        "markdown-pdf.header.height": {
+        "typer.header.height": {
           "type": [
             "string",
             "null"
@@ -169,7 +144,7 @@
           "default": "",
           "description": "Header height. units: mm, cm, in, px"
         },
-        "markdown-pdf.footer.contents": {
+        "typer.footer.contents": {
           "type": [
             "string",
             "null"
@@ -177,7 +152,7 @@
           "default": "<div style=\"text-align: center; margin-top: 0.5cm;\">{{page}}/{{pages}}</div>",
           "description": "Footer contents"
         },
-        "markdown-pdf.footer.height": {
+        "typer.footer.height": {
           "type": [
             "string",
             "null"
