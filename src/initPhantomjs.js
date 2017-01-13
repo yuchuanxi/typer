@@ -5,7 +5,7 @@ const which = require('which')
 const vscode = require('vscode')
 
 const getPhantomjsPath = require('./getPhantomjsPath.js')
-const isExistsFile = require('./isExistsFile.js')
+const isExistsFile = require('./utils/isExistsFile.js')
 
 const showErrorMessage = vscode.window.showErrorMessage
 

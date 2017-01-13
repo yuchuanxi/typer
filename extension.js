@@ -1,11 +1,10 @@
 const vscode = require('vscode')
 
-const Provider = require('./src/TyperDocumentContentProvider.js')
+const Provider = require('./src/utils/TyperDocumentContentProvider.js')
 const typerPreview = require('./src/typerPreview.js')
 
 const initPhantomjs = require('./src/initPhantomjs.js')
-const convertMdToHtml = require('./src/convertMdToHtml.js')
-const convertMdToPdf = require('./src/convertMdToPdf.js')
+const exportMarkdown = require('./src/exportMarkdown.js')
 
 const register = (context, name, fn) => {
   context.subscriptions.push(vscode.commands.registerCommand(`extension.${name}`, () => fn()))
@@ -38,8 +37,8 @@ exports.activate = (context) => {
   // Export html/pdf
   initPhantomjs()
 
-  register(context, 'markdown-html', convertMdToHtml)
-  register(context, 'markdown-pdf', convertMdToPdf)
+  register(context, 'markdown-html', exportMarkdown('html'))
+  register(context, 'markdown-pdf', exportMarkdown('pdf'))
 }
 
 // this method is called when your extension is deactivated

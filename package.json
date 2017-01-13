@@ -47,6 +47,7 @@
     "menus": {
       "editor/context": [
         {
+          "when": "resourceLangId == markdown",
           "command": "extension.markdown-preview",
           "title": "Preview Markdown on Right",
           "group": "typer"

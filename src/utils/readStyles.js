@@ -13,7 +13,7 @@ module.exports = () => {
   let i
 
   // 1. read the style of the vscode.
-  filename = path.join(__dirname, '../styles', 'markdown.css')
+  filename = path.join(__dirname, '../../styles', 'markdown.css')
   style += readCss(filename)
 
   // 2. read the style of the markdown.styles setting.
@@ -39,13 +39,13 @@ module.exports = () => {
       filename = path.join(__dirname, 'node_modules', 'highlight.js', 'styles', css)
       style += readCss(filename)
     } else {
-      filename = path.join(__dirname, '../styles', 'tomorrow.css')
+      filename = path.join(__dirname, '../../styles', 'tomorrow.css')
       style += readCss(filename)
     }
   }
 
   // 4. read the style of the markdown-pdf.
-  filename = path.join(__dirname, '../styles', 'markdown-pdf.css')
+  filename = path.join(__dirname, '../../styles', 'markdown-pdf.css')
   style += readCss(filename)
 
   // 5. read the style of the markdown-pdf.styles settings.
