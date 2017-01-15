@@ -65,8 +65,8 @@ module.exports = (type) => {
     setStatusBarMessage('$(Typer) Converting...')
 
     const mdFileName = vscodeWindow.activeTextEditor.document.fileName
+    const markdownFragment = vscodeWindow.activeTextEditor.document.getText()
     const mdFileExtName = path.extname(mdFileName)
-    const markdownFragment = fs.readFileSync(mdFileName, 'utf-8')
     const html = createHtml(markdownFragment)
 
     // export html
