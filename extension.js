@@ -38,7 +38,7 @@ exports.activate = (context) => {
   initPhantomjs()
 
   register(context, 'markdown-html', exportMarkdown('html'))
-  register(context, 'markdown-pdf', exportMarkdown('pdf'))
+  // register(context, 'markdown-pdf', exportMarkdown('pdf'))
 }
 
 // this method is called when your extension is deactivated

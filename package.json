@@ -2,7 +2,7 @@
   "name": "typer",
   "displayName": "Typer",
   "description": "Markdown Partner",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "publisher": "yuchuanxi",
   "icon": "images/icon.png",
   "engines": {
@@ -25,7 +25,7 @@
   },
   "markdown": "github",
   "activationEvents": [
-    "onCommand:extension.markdown-pdf",
+    "onCommand:extension.markdown-html",
     "onLanguage:markdown"
   ],
   "main": "./extension",
@@ -38,10 +38,6 @@
       {
         "command": "extension.markdown-html",
         "title": "Convert Markdown to HTML"
-      },
-      {
-        "command": "extension.markdown-pdf",
-        "title": "Convert Markdown to PDF"
       }
     ],
     "menus": {
@@ -55,11 +51,6 @@
         {
           "when": "resourceLangId == markdown",
           "command": "extension.markdown-html",
-          "group": "typer"
-        },
-        {
-          "when": "resourceLangId == markdown",
-          "command": "extension.markdown-pdf",
           "group": "typer"
         }
       ]
