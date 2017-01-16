@@ -165,6 +165,7 @@
     "markdown-it": "^8.2.2",
     "markdown-it-checkbox": "^1.1.0",
     "markdown-it-emoji": "^1.2.0",
+    "markdown-it-named-headers": "^0.0.4",
     "phantomjs-prebuilt": "^2.1.14",
     "pug": "^2.0.0-beta6",
     "vscode": "^1.0.3",

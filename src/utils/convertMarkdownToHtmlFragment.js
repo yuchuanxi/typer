@@ -1,9 +1,7 @@
-const path = require('path')
-const url = require('url')
-
 const vscode = require('vscode')
 const hljs = require('highlight.js')
 const MarkdownIt = require('markdown-it')
+const markdownItNamedHeaders = require('markdown-it-named-headers')
 // const markdownItCheckbox = require('markdown-it-checkbox')
 
 const showErrorMessage = vscode.window.showErrorMessage
@@ -19,10 +17,10 @@ const md = new MarkdownIt({
       }
     }
 
-    // return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
-    return ''
+    return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
   },
 })
+md.use(markdownItNamedHeaders, {})
 
 module.exports = (markdownFragment) => {
   // console.log(1)
