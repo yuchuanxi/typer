@@ -22,6 +22,17 @@ const md = new MarkdownIt({
 })
 md.use(markdownItNamedHeaders, {})
 
+function addLineNumberRenderer(tokens, idx, options, env, self) {
+  const token = tokens[idx]
+  if (token.level === 0 && token.map && token.map.length) {
+    token.attrSet('data-line', token.map[0])
+  }
+  return self.renderToken(tokens, idx, options, env, self)
+}
+
+md.renderer.rules.paragraph_open = addLineNumberRenderer
+md.renderer.rules.heading_open = addLineNumberRenderer
+
 module.exports = (markdownFragment) => {
   // console.log(1)
   // console.log(1)
