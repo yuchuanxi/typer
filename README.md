@@ -30,3 +30,8 @@ Supports the following features.
 - optimize the markdown syntax
 - add more syntax than commonMark or GFM
 - make preview pretty
+
+
+## markdown
+- [CommonMark spec](https://github.com/jgm/CommonMark/)
+- [CommonMark parser](https://github.com/jgm/commonmark.js): CommonMark parser and renderer in JavaScript
