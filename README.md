@@ -24,6 +24,9 @@ Supports the following features.
 1. Right click and select `Convert Markdown to HTML`
 1. Right click and select `Preview Markdown on Right`
 
+
+![](assets/README-c72f9.png)
+
 ## TODOLIST
 
 - export pdf

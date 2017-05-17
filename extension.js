@@ -6,6 +6,8 @@ const typerPreview = require('./src/typerPreview.js')
 const initPhantomjs = require('./src/initPhantomjs.js')
 const exportMarkdown = require('./src/exportMarkdown.js')
 
+const pasteAction = require('./src/pasteAction.js')
+
 const register = (context, name, fn) => {
   context.subscriptions.push(vscode.commands.registerCommand(`extension.${name}`, () => fn()))
 }
@@ -39,6 +41,7 @@ exports.activate = (context) => {
 
   register(context, 'markdown-html', exportMarkdown('html'))
   // register(context, 'markdown-pdf', exportMarkdown('pdf'))
+  register(context, 'markdown-paste', pasteAction)
 }
 
 // this method is called when your extension is deactivated
